@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+*.log
+.pdf-review/
+.env*
+!.env.example
+.e2e-results/
+*.tsbuildinfo
+docs/kisi-gorevleri/preview-*.png
