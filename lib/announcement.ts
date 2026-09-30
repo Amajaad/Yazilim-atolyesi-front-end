@@ -1,14 +1,17 @@
 import type { Announcement } from "./content";
+import { request } from "./api";
 export type ApiAnnouncement = {
   coverImageUrl?: string;
   coverImageAltText?: string;
   id: string;
+  slug?: string;
   title: string;
-  slug: string;
   summary: string;
   content: string;
   category: string;
   publishedAt: string | null;
+  isHidden?: boolean;
+  active?: boolean;
 };
 export function mapAnnouncement(item: ApiAnnouncement): Announcement {
   const date = item.publishedAt ? new Date(item.publishedAt) : null;
@@ -16,6 +19,7 @@ export function mapAnnouncement(item: ApiAnnouncement): Announcement {
     coverImageUrl: item.coverImageUrl,
     coverImageAltText: item.coverImageAltText,
     id: item.id,
+    slug: item.slug,
     title: item.title,
     summary: item.summary,
     content: item.content,
@@ -39,4 +43,11 @@ export function mapAnnouncement(item: ApiAnnouncement): Announcement {
       : "Yayın tarihi belirtilmedi",
     publishedAt: item.publishedAt || undefined,
   };
+}
+export async function getAnnouncementBySlug(slug: string): Promise<ApiAnnouncement | null> {
+  try {
+    return await request<ApiAnnouncement>(`announcements/${slug}`);
+  } catch (error) {
+    return null;
+  }
 }
