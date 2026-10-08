@@ -122,6 +122,3 @@ export const updates = [
   "Tasarım değiştiğinde ilgili kişiyi haberdar et.",
   "Hazır olan işleri açıkça işaretle.",
 ];
-export function filterVisibleItems<T extends Record<string, any>>(items: T[]): T[] {
-  return items.filter((item) => !item.isHidden && item.active !== false);
-}

@@ -37,14 +37,7 @@ export function Pillars() {
 export function AnnouncementCard({ item }: { item: Announcement }) {
   return (
     <article className="announcement-card">
-      {mediaUrl(item.coverImageUrl) && (
-        <img
-          className="announcement-cover"
-          src={mediaUrl(item.coverImageUrl)}
-          alt={item.coverImageAltText || ""}
-          loading="lazy"
-        />
-      )}
+      {mediaUrl(item.coverImageUrl) && <img className="announcement-cover" src={mediaUrl(item.coverImageUrl)} alt={item.coverImageAltText || ""} loading="lazy" />}
       <div className="announcement-main">
         <div className="announcement-date">
           <strong>{item.day}</strong>
@@ -65,13 +58,7 @@ export function AnnouncementCard({ item }: { item: Announcement }) {
     </article>
   );
 }
-export function Announcements({
-  items,
-  live = true,
-}: {
-  items: Announcement[];
-  live?: boolean;
-}) {
+export function Announcements({ items, live = true }: { items: Announcement[]; live?: boolean }) {
   return (
     <section id="duyurular" className="announcement-panel">
       <div className="panel-heading">
@@ -99,12 +86,7 @@ export function Announcements({
 }
 export function About({ blocks }: { blocks?: ContentRecord[] | null }) {
   if (blocks?.length === 0) return null;
-  if (blocks)
-    return (
-      <section id="hakkimizda" className="about-panel">
-        <PublicBlocks blocks={blocks} />
-      </section>
-    );
+  if (blocks) return <section id="hakkimizda" className="about-panel"><PublicBlocks blocks={blocks} /></section>;
   return (
     <section id="hakkimizda" className="about-panel">
       <h2 className="panel-title">
@@ -166,9 +148,7 @@ export function Team() {
             <h3>{t.title}</h3>
             <p>{t.text}</p>
             <p>{t.description}</p>
-            <span className="team-card-action">
-              Bu alanda katıl <span aria-hidden="true">↗</span>
-            </span>
+            <span className="team-card-action">Bu alanda katıl <span aria-hidden="true">↗</span></span>
           </a>
         ))}
       </div>
@@ -227,15 +207,10 @@ export function Contact() {
   return <ContactForm />;
 }
 export async function Footer() {
-  const [settings, contact] = await Promise.all([
-    getPublicSettings(),
-    getPageContents("CONTACT"),
-  ]);
+  const [settings, contact] = await Promise.all([getPublicSettings(), getPageContents("CONTACT")]);
   const email = settings["contact.email"] ?? club.email;
   const phone = settings["contact.phone"] ?? "+90 216 452 20 00";
-  const address =
-    settings["contact.address"] ??
-    "İstanbul Gedik Üniversitesi, Kartal Kampüsü, İstanbul";
+  const address = settings["contact.address"] ?? "İstanbul Gedik Üniversitesi, Kartal Kampüsü, İstanbul";
   return (
     <footer id="iletisim" className="site-footer lower-width">
       <div className="footer-brand">
@@ -255,6 +230,11 @@ export async function Footer() {
         <a href="/#iletisim">› İletişim</a>
       </nav>
       <div className="footer-contact">
+        <h2>Bize Ulaşın</h2>
+        <p>
+          <Icon name="pin" />
+          {address}
+        </p>
         {contact && <PublicBlocks blocks={contact} />}
         <a href={`mailto:${email}`}>
           <Icon name="mail" />
@@ -273,47 +253,30 @@ export async function Footer() {
         </Dialog>
       </div>
       <div className="footer-social">
-        <h2>Bize Ulaşın</h2>
-        <p className="mb-md-4 mb-4">
-          <Icon name="pin" />
-          {address}
-        </p>
-        <h2 className="">Bizi Takip Edin</h2>
+        <h2>Bizi Takip Edin</h2>
         <div className="social-links">
           {(["github", "linkedin", "instagram", "youtube"] as const).map(
-            (name) =>
-              safeLink(settings[`social.${name}`]) ? (
-                <a
-                  key={name}
-                  className="social-link"
-                  href={safeLink(settings[`social.${name}`])}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Icon name={name} />
-                  <span className="sr-only">{name}</span>
+            (name) => safeLink(settings[`social.${name}`]) ? <a key={name} className="social-link" href={safeLink(settings[`social.${name}`])} target="_blank" rel="noopener noreferrer"><Icon name={name} /><span className="sr-only">{name}</span></a> : (
+              <Dialog
+                key={name}
+                label={
+                  <>
+                    <Icon name={name} />
+                    <span className="sr-only">{name}</span>
+                  </>
+                }
+                title="Sosyal medya"
+                className="social-link"
+              >
+                <p>
+                  Bu kanalın bağlantısı henüz paylaşılmadı. Güncel bağlantılar
+                  için bizimle iletişime geçebilirsin.
+                </p>
+                <a className="club-button" href={`mailto:${email}`}>
+                  Bize ulaşın
                 </a>
-              ) : (
-                <Dialog
-                  key={name}
-                  label={
-                    <>
-                      <Icon name={name} />
-                      <span className="sr-only">{name}</span>
-                    </>
-                  }
-                  title="Sosyal medya"
-                  className="social-link"
-                >
-                  <p>
-                    Bu kanalın bağlantısı henüz paylaşılmadı. Güncel bağlantılar
-                    için bizimle iletişime geçebilirsin.
-                  </p>
-                  <a className="club-button" href={`mailto:${email}`}>
-                    Bize ulaşın
-                  </a>
-                </Dialog>
-              ),
+              </Dialog>
+            ),
           )}
         </div>
       </div>
